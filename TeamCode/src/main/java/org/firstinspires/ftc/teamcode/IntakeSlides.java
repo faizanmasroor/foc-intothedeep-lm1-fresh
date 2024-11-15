@@ -10,7 +10,7 @@ public class IntakeSlides extends OpMode
 {
     public DcMotor iSlideL, iSlideR;
     public int I_SLIDE_MAX_POSITION;
-    public double I_SLIDE_MAX_SPEED;
+    public double I_SLIDE_SPEED_MULTIPLIER;
 
     public boolean g1_a, g1_x, g1_b, g1_y, g1_l_bumper, g1_r_bumper;
     public boolean g2_a, g2_x, g2_b, g2_y, g2_l_bumper, g2_r_bumper;
@@ -80,7 +80,7 @@ public class IntakeSlides extends OpMode
         iSlideR.setPower(0);
 
         I_SLIDE_MAX_POSITION = 1100;
-        I_SLIDE_MAX_SPEED = 0.4;
+        I_SLIDE_SPEED_MULTIPLIER = 0.4;
     }
 
     @Override
@@ -111,23 +111,8 @@ public class IntakeSlides extends OpMode
         }
         else
         {
-            // When joystick says extend but exceeds the max speed.
-            if (g2_l_stick_y * -1 > 0 && g2_l_stick_y * -1 > I_SLIDE_MAX_SPEED)
-            {
-                iSlideL.setPower(I_SLIDE_MAX_SPEED);
-                iSlideR.setPower(I_SLIDE_MAX_SPEED);
-            }
-            // When joystick says retract but exceeds the max speed.
-            else if (g2_l_stick_y * -1 < 0 && g2_l_stick_y * -1 < -I_SLIDE_MAX_SPEED)
-            {
-                iSlideL.setPower(-I_SLIDE_MAX_SPEED);
-                iSlideR.setPower(-I_SLIDE_MAX_SPEED);
-            }
-            else
-            {
-                iSlideL.setPower(g2_l_stick_y * -1);
-                iSlideR.setPower(g2_l_stick_y * -1);
-            }
+            iSlideL.setPower(g2_l_stick_y * -1 * I_SLIDE_SPEED_MULTIPLIER);
+            iSlideR.setPower(g2_l_stick_y * -1 * I_SLIDE_SPEED_MULTIPLIER);
         }
 
         assignLastInputValues();
