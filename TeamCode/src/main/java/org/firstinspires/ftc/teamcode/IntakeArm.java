@@ -64,8 +64,8 @@ public class IntakeArm extends OpMode
     @Override
     public void init()
     {
-        iArmL = hardwareMap.get(Servo.class, "iArmL");
-        iArmR = hardwareMap.get(Servo.class, "iArmR");
+        iArmL = hardwareMap.get(Servo.class, "L1");
+        iArmR = hardwareMap.get(Servo.class, "R1");
 
         iArmLMin = 0.4;
         iArmLMax = 0.5;

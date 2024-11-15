@@ -63,8 +63,8 @@ public class IntakeWheels extends OpMode
     @Override
     public void init()
     {
-        iWheelL = hardwareMap.get(CRServo.class, "iWheelL");
-        iWheelR = hardwareMap.get(CRServo.class, "iWheelR");
+        iWheelL = hardwareMap.get(CRServo.class, "L2");
+        iWheelR = hardwareMap.get(CRServo.class, "R2");
     }
 
     @Override
