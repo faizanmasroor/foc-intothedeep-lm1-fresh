@@ -3,13 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name="OuttakeSlides")
 public class OuttakeSlides extends OpMode
 {
     public DcMotor oSlideL, oSlideR;
-    public int oSlidesTargetPosition;
-    public double O_SLIDE_SPEED;
+    public int O_SLIDE_MAX_POSITION;
+    public double O_SLIDE_SPEED_MULTIPLIER;
 
     public boolean g1_a, g1_x, g1_b, g1_y, g1_l_bumper, g1_r_bumper;
     public boolean g2_a, g2_x, g2_b, g2_y, g2_l_bumper, g2_r_bumper;
@@ -67,8 +68,13 @@ public class OuttakeSlides extends OpMode
         oSlideL = hardwareMap.get(DcMotor.class, "oSlideL");
         oSlideR = hardwareMap.get(DcMotor.class, "oSlideR");
 
+        oSlideR.setDirection(DcMotorSimple.Direction.REVERSE);
+
         oSlideL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         oSlideR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        oSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        oSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         oSlideL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         oSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -76,7 +82,8 @@ public class OuttakeSlides extends OpMode
         oSlideL.setPower(0);
         oSlideR.setPower(0);
 
-        O_SLIDE_SPEED = 0.5;
+        O_SLIDE_MAX_POSITION = 4300;
+        O_SLIDE_SPEED_MULTIPLIER = 0.4;
     }
 
     @Override
@@ -90,20 +97,23 @@ public class OuttakeSlides extends OpMode
     {
         readControllerInput();
 
-        if (ControllerUtils.justPressed(g1_r_bumper, g1_r_bumper_last)) oSlidesTargetPosition = 0;
-        else if (ControllerUtils.justPressed(g1_a, g1_a_last)) oSlidesTargetPosition = 100;
-        else if (ControllerUtils.justPressed(g1_x, g1_x_last)) oSlidesTargetPosition = 200;
-        else if (ControllerUtils.justPressed(g1_b, g1_b_last)) oSlidesTargetPosition = 300;
-        else if (ControllerUtils.justPressed(g1_y, g1_y_last)) oSlidesTargetPosition = 400;
-
-        oSlideL.setTargetPosition(oSlidesTargetPosition);
-        oSlideR.setTargetPosition(oSlidesTargetPosition);
-
-        oSlideL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        oSlideR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        oSlideL.setPower(O_SLIDE_SPEED);
-        oSlideR.setPower(O_SLIDE_SPEED);
+        // When joystick says retract but slides are fully retracted.
+        if (g2_r_stick_y * -1 < 0 && (oSlideL.getCurrentPosition() <= 0 || oSlideR.getCurrentPosition() <= 0))
+        {
+            oSlideL.setPower(0);
+            oSlideR.setPower(0);
+        }
+        // When joystick says extend but slides are fully extended.
+        else if (g2_r_stick_y * -1 > 0 && (oSlideL.getCurrentPosition() >= O_SLIDE_MAX_POSITION || oSlideR.getCurrentPosition() >= O_SLIDE_MAX_POSITION))
+        {
+            oSlideL.setPower(0);
+            oSlideR.setPower(0);
+        }
+        else
+        {
+            oSlideL.setPower(g2_r_stick_y * -1 * O_SLIDE_SPEED_MULTIPLIER);
+            oSlideR.setPower(g2_r_stick_y * -1 * O_SLIDE_SPEED_MULTIPLIER);
+        }
 
         assignLastInputValues();
     }
