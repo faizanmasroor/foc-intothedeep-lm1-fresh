@@ -73,6 +73,9 @@ public class IntakeSlides extends OpMode
         iSlideL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         iSlideR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        iSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        iSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         iSlideL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         iSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -93,9 +96,6 @@ public class IntakeSlides extends OpMode
     public void loop()
     {
         readControllerInput();
-
-        iSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        iSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // When joystick says retract but slides are fully retracted.
         if (g2_l_stick_y * -1 < 0 && (iSlideL.getCurrentPosition() <= 0 || iSlideR.getCurrentPosition() <= 0))
