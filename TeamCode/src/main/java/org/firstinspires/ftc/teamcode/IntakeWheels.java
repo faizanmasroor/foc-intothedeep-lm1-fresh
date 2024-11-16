@@ -3,12 +3,13 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name="IntakeWheels")
 public class IntakeWheels extends OpMode
 {
     public CRServo iWheelL, iWheelR;
-    public boolean iWheelsAreIntaking;
+    public boolean iWheelsAreIntaking, iWheelsAreStopped;
 
     public boolean g1_a, g1_x, g1_b, g1_y, g1_l_bumper, g1_r_bumper;
     public boolean g2_a, g2_x, g2_b, g2_y, g2_l_bumper, g2_r_bumper;
@@ -65,14 +66,15 @@ public class IntakeWheels extends OpMode
     {
         iWheelL = hardwareMap.get(CRServo.class, "L2");
         iWheelR = hardwareMap.get(CRServo.class, "R2");
+
+        iWheelL.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     @Override
     public void start()
     {
-        iWheelL.setPower(1);
-        iWheelR.setPower(1);
-        iWheelsAreIntaking = true;
+        iWheelsAreIntaking = false;
+        iWheelsAreStopped = false;
     }
 
     @Override
@@ -80,20 +82,31 @@ public class IntakeWheels extends OpMode
     {
         readControllerInput();
 
+        if (ControllerUtils.justPressed(g2_r_bumper, g2_r_bumper_last)) iWheelsAreStopped = !iWheelsAreStopped;
+
         if (ControllerUtils.justPressed(g2_x, g2_x_last))
         {
+
             if (iWheelsAreIntaking)
             {
-                iWheelL.setPower(0);
-                iWheelR.setPower(0);
+                iWheelL.setPower(-1);
+                iWheelR.setPower(-1);
+                iWheelsAreIntaking = !iWheelsAreIntaking;
             }
             else
             {
                 iWheelL.setPower(1);
                 iWheelR.setPower(1);
+                iWheelsAreIntaking = !iWheelsAreIntaking;
             }
-            iWheelsAreIntaking = !iWheelsAreIntaking;
         }
+
+        if (ControllerUtils.justPressed(g2_r_bumper, g2_r_bumper_last))
+        {
+            iWheelL.setPower(0);
+            iWheelR.setPower(0);
+        }
+
 
         assignLastInputValues();
     }

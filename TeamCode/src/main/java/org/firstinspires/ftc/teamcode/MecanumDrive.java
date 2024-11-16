@@ -11,7 +11,7 @@ public class MecanumDrive extends OpMode
     public DcMotor fr, fl, br, bl;
     public double frPower, flPower, brPower, blPower;
     public double drive, strafe, turn;
-    public double MECANUM_DRIVE_SPEED;
+    public double MECANUM_DRIVE_SPEED, MECANUM_DRIVE_TURN_SPEED;
 
     public boolean g1_a, g1_x, g1_b, g1_y, g1_l_bumper, g1_r_bumper;
     public boolean g2_a, g2_x, g2_b, g2_y, g2_l_bumper, g2_r_bumper;
@@ -94,6 +94,7 @@ public class MecanumDrive extends OpMode
         bl.setPower(0);
 
         MECANUM_DRIVE_SPEED = 0.5;
+        MECANUM_DRIVE_TURN_SPEED = 0.7;
     }
 
     @Override
@@ -109,7 +110,7 @@ public class MecanumDrive extends OpMode
 
         drive = -1 * g1_l_stick_y;
         strafe = g1_l_stick_x;
-        turn = g1_r_stick_x;
+        turn = MECANUM_DRIVE_TURN_SPEED * g1_r_stick_x;
 
         // Motor power variables
         frPower = drive - strafe;

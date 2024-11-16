@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class IntakeArm extends OpMode
 {
     public Servo iArmL, iArmR;
-    public double iArmLMin, iArmLMax, iArmRMin, iArmRMax;
+    public double iArmLExtendPosition, iArmRExtendPosition, iArmLRetractPosition, iArmRRetractPosition;
     public boolean iArmIsExtended;
 
     public boolean g1_a, g1_x, g1_b, g1_y, g1_l_bumper, g1_r_bumper;
@@ -66,22 +66,18 @@ public class IntakeArm extends OpMode
     {
         iArmL = hardwareMap.get(Servo.class, "L1");
         iArmR = hardwareMap.get(Servo.class, "R1");
-
-        iArmLMin = 0.4;
-        iArmLMax = 0.5;
-        iArmRMin = 0.4;
-        iArmRMax = 0.5;
+        iArmLExtendPosition = 0.076;
+        iArmRExtendPosition = 0.924;
+        iArmLRetractPosition = 0.96;
+        iArmRRetractPosition = 0.04;
         iArmIsExtended = false;
-
-        iArmL.scaleRange(iArmLMin, iArmLMax);
-        iArmR.scaleRange(iArmRMin, iArmRMax);
     }
 
     @Override
     public void start()
     {
-        iArmL.setPosition(0);
-        iArmR.setPosition(0);
+        iArmL.setPosition(iArmLRetractPosition);
+        iArmR.setPosition(iArmRRetractPosition);
     }
 
     @Override
@@ -93,13 +89,13 @@ public class IntakeArm extends OpMode
         {
             if (iArmIsExtended)
             {
-                iArmL.setPosition(0);
-                iArmR.setPosition(0);
+                iArmL.setPosition(iArmLRetractPosition);
+                iArmR.setPosition(iArmRRetractPosition);
             }
             else
             {
-                iArmL.setPosition(1);
-                iArmR.setPosition(1);
+                iArmL.setPosition(iArmLExtendPosition);
+                iArmR.setPosition(iArmRExtendPosition);
             }
             iArmIsExtended = !iArmIsExtended;
         }

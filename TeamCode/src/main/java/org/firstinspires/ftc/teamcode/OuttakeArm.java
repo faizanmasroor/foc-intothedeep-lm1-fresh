@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class OuttakeArm extends OpMode
 {
     public Servo oArm;
-    public double oArmMin, oArmMax;
+    public double oArmExtendPosition, oArmRetractPosition;
     public boolean oArmIsExtended;
 
     public boolean g1_a, g1_x, g1_b, g1_y, g1_l_bumper, g1_r_bumper;
@@ -65,18 +65,15 @@ public class OuttakeArm extends OpMode
     public void init()
     {
         oArm = hardwareMap.get(Servo.class, "oArm");
-
-        oArmMin = 0.25;
-        oArmMax = 0.75;
+        oArmExtendPosition = 0.07;
+        oArmRetractPosition = 0.85;
         oArmIsExtended = false;
-
-        oArm.scaleRange(oArmMin, oArmMax);
     }
 
     @Override
     public void start()
     {
-        oArm.setPosition(0);
+        oArm.setPosition(oArmRetractPosition);
     }
 
     @Override
@@ -86,8 +83,8 @@ public class OuttakeArm extends OpMode
 
         if (ControllerUtils.justPressed(g2_y, g2_y_last))
         {
-            if (oArmIsExtended) oArm.setPosition(0);
-            else oArm.setPosition(1);
+            if (oArmIsExtended) oArm.setPosition(oArmRetractPosition);
+            else oArm.setPosition(oArmExtendPosition);
             oArmIsExtended = !oArmIsExtended;
         }
 

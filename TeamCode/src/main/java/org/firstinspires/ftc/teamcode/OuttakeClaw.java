@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class OuttakeClaw extends OpMode
 {
     public Servo oClaw;
-    public double oClawMin, oClawMax;
+    public double oClawClosePosition, oClawOpenPosition;
     public boolean oClawIsOpen;
 
     public boolean g1_a, g1_x, g1_b, g1_y, g1_l_bumper, g1_r_bumper;
@@ -65,18 +65,15 @@ public class OuttakeClaw extends OpMode
     public void init()
     {
         oClaw = hardwareMap.get(Servo.class, "oClaw");
-
-        oClawMin = 0.2;
-        oClawMax = 0.5;
+        oClawClosePosition = 1;
+        oClawOpenPosition = 0.93;
         oClawIsOpen = false;
-
-        oClaw.scaleRange(oClawMin, oClawMax);
     }
 
     @Override
     public void start()
     {
-        oClaw.setPosition(0);
+        oClaw.setPosition(oClawClosePosition);
     }
 
     @Override
@@ -84,10 +81,10 @@ public class OuttakeClaw extends OpMode
     {
         readControllerInput();
 
-        if (ControllerUtils.justPressed(g2_r_bumper, g2_r_bumper_last))
+        if (ControllerUtils.justPressed(g2_a, g2_a_last))
         {
-            if (oClawIsOpen) oClaw.setPosition(0);
-            else oClaw.setPosition(1);
+            if (oClawIsOpen) oClaw.setPosition(oClawClosePosition);
+            else oClaw.setPosition(oClawOpenPosition);
             oClawIsOpen = !oClawIsOpen;
         }
 

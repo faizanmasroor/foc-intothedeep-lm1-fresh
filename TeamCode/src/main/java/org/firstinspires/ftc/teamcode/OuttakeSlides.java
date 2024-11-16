@@ -68,7 +68,7 @@ public class OuttakeSlides extends OpMode
         oSlideL = hardwareMap.get(DcMotor.class, "oSlideL");
         oSlideR = hardwareMap.get(DcMotor.class, "oSlideR");
 
-        oSlideR.setDirection(DcMotorSimple.Direction.REVERSE);
+        oSlideL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         oSlideL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         oSlideR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -82,8 +82,8 @@ public class OuttakeSlides extends OpMode
         oSlideL.setPower(0);
         oSlideR.setPower(0);
 
-        O_SLIDE_MAX_POSITION = 4300;
-        O_SLIDE_SPEED_MULTIPLIER = 0.4;
+        O_SLIDE_MAX_POSITION = 2700;
+        O_SLIDE_SPEED_MULTIPLIER = 0.5;
     }
 
     @Override
