@@ -65,7 +65,7 @@ public class OuttakeArm extends OpMode
     public void init()
     {
         oArm = hardwareMap.get(Servo.class, "oArm");
-        oArmExtendPosition = 0.07;
+        oArmExtendPosition = 0.04;
         oArmRetractPosition = 0.85;
         oArmIsExtended = false;
     }

@@ -95,8 +95,8 @@ public class Everything extends OpMode
         {
             iArmL = hardwareMap.get(Servo.class, "L1");
             iArmR = hardwareMap.get(Servo.class, "R1");
-            iArmLExtendPosition = 0.076;
-            iArmRExtendPosition = 0.924;
+            iArmLExtendPosition = 0.08;
+            iArmRExtendPosition = 0.92;
             iArmLRetractPosition = 0.96;
             iArmRRetractPosition = 0.04;
             iArmIsExtended = false;
@@ -170,7 +170,7 @@ public class Everything extends OpMode
         // OuttakeArm
         {
             oArm = hardwareMap.get(Servo.class, "oArm");
-            oArmExtendPosition = 0.07;
+            oArmExtendPosition = 0.04;
             oArmRetractPosition = 0.85;
             oArmIsExtended = false;
         }
@@ -253,6 +253,28 @@ public class Everything extends OpMode
                     iArmR.setPosition(iArmRExtendPosition);
                 }
                 iArmIsExtended = !iArmIsExtended;
+            }
+            else if (g2_l_stick_y * -1 < -0.1 && (iSlideL.getCurrentPosition() < 300 && iSlideR.getCurrentPosition() < 300))
+            {
+                if (iArmIsExtended)
+                {
+                    iArmIsExtended = false;
+                    iArmL.setPosition(iArmLRetractPosition);
+                    iArmR.setPosition(iArmRRetractPosition);
+                    if (!oArmIsExtended)
+                    {
+                        oClaw.setPosition(oClawOpenPosition);
+                        oClawIsOpen = true;
+                    }
+                }
+            } else if (g2_l_stick_y * -1 > 0.1 && (iSlideL.getCurrentPosition() > 300 && iSlideR.getCurrentPosition() > 300))
+            {
+                if (!iArmIsExtended)
+                {
+                    iArmIsExtended = true;
+                    iArmL.setPosition(iArmLExtendPosition);
+                    iArmR.setPosition(iArmRExtendPosition);
+                }
             }
         }
 

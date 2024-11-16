@@ -66,8 +66,8 @@ public class IntakeArm extends OpMode
     {
         iArmL = hardwareMap.get(Servo.class, "L1");
         iArmR = hardwareMap.get(Servo.class, "R1");
-        iArmLExtendPosition = 0.076;
-        iArmRExtendPosition = 0.924;
+        iArmLExtendPosition = 0.08;
+        iArmRExtendPosition = 0.92;
         iArmLRetractPosition = 0.96;
         iArmRRetractPosition = 0.04;
         iArmIsExtended = false;
